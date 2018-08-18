@@ -1,0 +1,149 @@
+'use strict';
+var async = require('asyncawait/async');
+var await = require('asyncawait/await');
+var FacturasRP = require(__base + 'server/infrastructure/repositories').facturas;
+var FacturasRS = require(__base + 'server/infrastructure/resources').factura;
+var ClientesRS = require(__base + 'server/infrastructure/resources').cliente;
+var fs = require("fs");
+
+function facturar(env,factura,clienteId,tipo) {
+    var cliente = await(ClientesRS.getCliente(clienteId));
+    var consultaRes;
+    if(cliente){
+        var iniciarSesionRes = await (FacturasRP.iniciarSesion(cliente.usuarioApi,cliente.claveApi));
+        // Revisar si existe el cert ya????
+        // Obtener el consecutivo
+        console.log('iniciarSesionRes ---------------');
+        console.log(iniciarSesionRes);
+        console.log('---------------');
+        console.log(Number(cliente.consecutivo));
+        var str = "" + (cliente.consecutivo++);
+        var pad = "000000000"
+        var con = pad.substring(0, pad.length - str.length) + str
+        console.log('con',con);
+        var generaClaveRes = await (FacturasRP.generaClave(tipo,cliente.tipoCedula,cliente.cedula,'506',con,factura.situacion,'00000010'));
+        console.log('generaClaveRes ---------------',con);
+        console.log(generaClaveRes);
+        console.log('---------------');
+        var generarTERes = await(FacturasRP.generaTE(
+            generaClaveRes.resp.clave,
+            generaClaveRes.resp.consecutivo,
+            factura.fecha,
+            factura.emisor.nombre,
+            factura.emisor.tipoId,
+            factura.emisor.id,
+            factura.nombreComercial,
+            factura.emisor.provincia,
+            factura.emisor.canton,
+            factura.emisor.distrito,
+            factura.emisor.barrio,
+            factura.emisor.senas,
+            factura.emisor.codigoPaisTel,
+            factura.emisor.tel,
+            factura.emisor.codigoPaisFax,
+            factura.emisor.fax,
+            factura.emisor.email,
+            factura.receptor.nombre,
+            factura.receptor.tipoId,
+            factura.receptor.id,
+            factura.receptor.provincia,
+            factura.receptor.canton,
+            factura.receptor.distrito,
+            factura.receptor.barrio,
+            factura.receptor.senas,
+            factura.receptor.codigoPaisTel,
+            factura.receptor.tel,
+            factura.receptor.codigoPaisFax,
+            factura.receptor.fax,
+            factura.receptor.email,
+            factura.condicionVenta,
+            factura.plazoCredito,
+            factura.medioPago,// 01
+            factura.codMoneda,// CRC
+            factura.tipoCambio, // 564.48
+            factura.totalServGravados,
+            factura.totalServExentos,
+            factura.totalMercGravada,
+            factura.totalMercExenta,
+            factura.totalGravados,
+            factura.totalExentos,
+            factura.totalVentas,
+            factura.totalDescuentos,
+            factura.totalVentasNeta,
+            factura.totalImpuestos,
+            factura.totalComprobante,
+            factura.otros,
+            factura.detalles,
+            factura.omitirReceptor
+            ));
+        console.log('generarTERes ---------------');
+        console.log(generarTERes);
+        console.log('--------------- ');
+        var firmarRes = await (FacturasRP.firmar(cliente.cert,generarTERes.resp.xml,cliente.pinCert,tipo));
+        console.log('firmarRes ---------------');
+        console.log(firmarRes);
+        console.log('---------------');
+        var tokenRes = await (FacturasRP.token(env,cliente.usuarioHacienda, cliente.claveHacienda));
+        console.log('tokenRes ---------------');
+        console.log(tokenRes);
+        console.log('---------------');
+        var envioRes = await (FacturasRP.envioMH(
+                tokenRes.resp.access_token,
+                generaClaveRes.resp.clave,
+                factura.fecha,
+                factura.emisor.tipoId,
+                factura.emisor.id,
+                factura.receptor.tipoId,
+                factura.receptor.id,
+                env,
+                firmarRes.resp.xmlFirmado
+            ));
+        console.log('envioRes ---------------');
+        console.log(envioRes);
+        console.log('---------------');
+        const sleep = ms => new Promise(res => setTimeout(res, ms));
+        var consultarResRaw;
+        async function consultarRes(){
+            consultarResRaw = await (FacturasRP.consulta(env,tokenRes.resp.access_token,generaClaveRes.resp.clave));
+            console.log('consultarResRaw ---------------');
+            console.log(consultarResRaw);
+            console.log('---------------');
+            if(consultarResRaw.resp['ind-estado'] === 'procesando'){
+                await sleep(1000)
+                await(consultarRes());
+            }
+        }
+        await(consultarRes());
+        var clienteActualizado = await(ClientesRS.updateCliente(cliente));
+        console.log('act');
+        console.log(clienteActualizado);
+        if (consultarResRaw.resp['Status'] === '0'){
+            consultaRes = {
+                'estado': 'fail',
+                'error': 'Hay un error en el Ministerio de Hacienda, por favor volverlo a intentar'
+            };
+        } else {
+            var dir = __base + 'server/facturas/'+cliente.cedula;
+            if (!fs.existsSync(dir)){
+                fs.mkdirSync(dir);
+            }
+            fs.writeFile(dir+"/"+consultarResRaw.resp.fecha+".xml", consultarResRaw.resp['respuesta-xml'], 'base64', function(err) {
+              console.log(err);
+            });
+            consultaRes = {
+                'estado': 'success',
+                'fecha': consultarResRaw.resp.fecha,
+                'cliente': cliente.cedula,
+                'respuesta': consultarResRaw.resp['ind-estado'] 
+            };
+        }
+    } else {
+        consultaRes = {
+            'estado': 'fail',
+            'error': 'El cliente no se encuentra en nuestros sistemas'
+        }
+    }
+    return consultaRes;
+}
+
+module.exports.facturar = async(facturar);
