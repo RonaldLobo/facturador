@@ -1,2 +1,2 @@
-var apiUrl = 'http://18.222.133.221/api.php';
+var apiUrl = 'http://kyrapps.com:9002/api.php';
 module.exports = apiUrl;

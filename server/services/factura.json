@@ -1,0 +1,70 @@
+{
+	"factura": {
+		"fecha":"2018-08-17T09:00:00-06:00",
+		"nombreComercial":"Ronald Lobo Barrantes",
+		"situacion": "normal",
+		"emisor":{
+			"nombre":"Ronald Lobo Barrantes",
+			"tipoId":"01",
+			"id":"206780037",
+			"provincia":"2",
+			"canton":"02",
+			"distrito":"01",
+			"barrio":"01",
+			"senas":"Cond Valle Esmeralda",
+			"codigoPaisTel":"506",
+			"tel":"87051854",
+			"codigoPaisFax":"",
+			"fax":"",
+			"email":"ronald.lb2@gmail.com"
+		},
+		"receptor":{
+			"nombre":"Ronald Lobo Barrantes",
+			"tipoId":"01",
+			"id":"206780037",
+			"provincia":"2",
+			"canton":"02",
+			"distrito":"01",
+			"barrio":"01",
+			"senas":"Cond Valle Esmeralda",
+			"codigoPaisTel":"506",
+			"tel":"87051854",
+			"codigoPaisFax":"",
+			"fax":"",
+			"email":"ronald.lb2@gmail.com"
+		},
+		"condicionVenta":"01",
+		"plazoCredito":"0",
+		"medioPago":"01",
+		"codMoneda":"CRC",
+		"tipoCambio":"1",
+		"totalServGravados":"0",
+		"totalServExentos":"8000",
+		"totalMercGravada":"0",
+		"totalMercExenta":"0",
+		"totalGravados":"0",
+		"totalExentos":"8000",
+		"totalVentas":"8000",
+		"totalDescuentos":"0",
+		"totalVentasNeta":"8000",
+		"totalImpuestos":"0",
+		"totalComprobante":"8000",
+		"otros":"Gracias.",
+		"detalles":{
+			"1": 
+				{
+					"cantidad":"1",
+					"unidadMedida":"Sp",
+					"detalle":"Corte de pelo y Barba",
+					"precioUnitario":"8000",
+					"montoTotal":"8000",
+					"subtotal":"8000",
+					"montoTotalLinea":"8000"
+				}
+			},
+		"omitirReceptor":"false"
+	},
+	"cliente":{
+		"id":"5b7822e5b81ba969c59785a9"
+	}
+}
