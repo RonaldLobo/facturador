@@ -108,7 +108,7 @@ function facturar(env,factura,clienteId,tipo) {
             console.log('consultarResRaw ---------------');
             console.log(consultarResRaw);
             console.log('---------------');
-            if(consultarResRaw.resp['ind-estado'] === 'procesando'){
+            if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido'){
                 await sleep(1000)
                 await(consultarRes());
             }
