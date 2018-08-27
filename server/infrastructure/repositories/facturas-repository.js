@@ -137,9 +137,11 @@ function generaTE(
     form.append('detalles', JSON.stringify(detalles));
     console.log('omitir_receptor',omitir_receptor);
     console.log('detalles',JSON.stringify(detalles));
-    if(omitir_receptor){
+    if(omitir_receptor == false){
+        console.log('omitiendo receptor');
         form.append('omitir_receptor', omitir_receptor);
     } else {
+        console.log('incluyendo receptor',receptor_nombre);
         form.append('receptor_nombre', receptor_nombre);
         form.append('receptor_tipo_indetif', receptor_tipo_indetif);
         form.append('receptor_num_identif', receptor_num_identif);

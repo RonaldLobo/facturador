@@ -8,6 +8,8 @@ var fs = require("fs");
 
 function facturar(env,factura,clienteId,tipo) {
     var cliente = await(ClientesRS.getCliente(clienteId));
+    var xmlFirmado = '';
+    var xmlResponse = '';
     var consultaRes;
     if(cliente){
         var iniciarSesionRes = await (FacturasRP.iniciarSesion(cliente.usuarioApi,cliente.claveApi));
@@ -77,15 +79,16 @@ function facturar(env,factura,clienteId,tipo) {
             factura.omitirReceptor
             ));
         console.log('generarTERes ---------------');
-        console.log(generarTERes);
+        // console.log(generarTERes);
         console.log('--------------- ');
         var firmarRes = await (FacturasRP.firmar(cliente.cert,generarTERes.resp.xml,cliente.pinCert,tipo));
         console.log('firmarRes ---------------');
-        console.log(firmarRes);
+        // console.log(firmarRes);
+        xmlFirmado = firmarRes.resp.xmlFirmado;
         console.log('---------------');
         var tokenRes = await (FacturasRP.token(env,cliente.usuarioHacienda, cliente.claveHacienda));
         console.log('tokenRes ---------------');
-        console.log(tokenRes);
+        // console.log(tokenRes);
         console.log('---------------');
         var envioRes = await (FacturasRP.envioMH(
                 tokenRes.resp.access_token,
@@ -99,18 +102,20 @@ function facturar(env,factura,clienteId,tipo) {
                 firmarRes.resp.xmlFirmado
             ));
         console.log('envioRes ---------------');
-        console.log(envioRes);
+        // console.log(envioRes);
         console.log('---------------');
         const sleep = ms => new Promise(res => setTimeout(res, ms));
         var consultarResRaw;
         async function consultarRes(){
             consultarResRaw = await (FacturasRP.consulta(env,tokenRes.resp.access_token,generaClaveRes.resp.clave));
             console.log('consultarResRaw ---------------');
-            console.log(consultarResRaw);
+            // console.log(consultarResRaw);
             console.log('---------------');
             if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido'){
                 await sleep(1000)
                 await(consultarRes());
+            } else {
+                xmlResponse = consultarResRaw.resp['respuesta-xml'];
             }
         }
         await(consultarRes());
@@ -134,7 +139,9 @@ function facturar(env,factura,clienteId,tipo) {
                 'estado': 'success',
                 'fecha': consultarResRaw.resp.fecha,
                 'cliente': cliente.cedula,
-                'respuesta': consultarResRaw.resp['ind-estado'] 
+                'respuesta': consultarResRaw.resp['ind-estado'],
+                'xmlfirmado': xmlFirmado,
+                'xmlrespuesta': xmlResponse
             };
         }
     } else {
