@@ -157,6 +157,9 @@ function generaTE(
         form.append('receptor_fax', receptor_fax);
         form.append('receptor_email', receptor_email);
     }
+    for (var pair of form.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]); 
+    }
     var rawRes = await(fetch(apiUrl, { method: 'POST', body: form }));
     var res = await(rawRes.json());
     return res;
