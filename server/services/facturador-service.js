@@ -83,7 +83,7 @@ function facturar(env,factura,clienteId,tipo) {
         console.log('--------------- ');
         var firmarRes = await (FacturasRP.firmar(cliente.cert,generarTERes.resp.xml,cliente.pinCert,tipo));
         console.log('firmarRes ---------------');
-        // console.log(firmarRes);
+        console.log(firmarRes);
         xmlFirmado = firmarRes.resp.xmlFirmado;
         console.log('---------------');
         var tokenRes = await (FacturasRP.token(env,cliente.usuarioHacienda, cliente.claveHacienda));
