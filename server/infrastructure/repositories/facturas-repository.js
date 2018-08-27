@@ -302,8 +302,10 @@ function envioMH(token,clave,fecha,emi_tipoIdentificacion,emi_numeroIdentificaci
     form.append('fecha', fecha);
     form.append('emi_tipoIdentificacion', emi_tipoIdentificacion);
     form.append('emi_numeroIdentificacion', emi_numeroIdentificacion);
-    form.append('recp_tipoIdentificacion', recp_tipoIdentificacion);
-    form.append('recp_numeroIdentificacion', recp_numeroIdentificacion);
+    var recTipoID = recp_tipoIdentificacion || ''
+    form.append('recp_tipoIdentificacion', recTipoID);
+    var recID = recp_numeroIdentificacion || ''
+    form.append('recp_numeroIdentificacion', recID);
     form.append('client_id', client_id);
     form.append('comprobanteXml', comprobanteXml);
     var rawRes = await(fetch(apiUrl, { method: 'POST', body: form }));
