@@ -10,7 +10,7 @@ function facturar(request, response) {
     // console.log('Debug POST factura',request.body);
     var result;
     try {
-        result = await (service.facturadorService.facturar('api-stag',request.body.factura,request.body.cliente.id,'TE'));
+        result = await (service.facturadorService.facturar('api-stag',request.body.factura,request.body.cliente.id,'TE',request.body.facturabase.base));
         return handlers.successResponseHandler(response, result);
     } catch (error) {
         console.log('error',error);
