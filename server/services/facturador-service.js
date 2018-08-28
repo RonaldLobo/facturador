@@ -8,7 +8,7 @@ var FacturasRS = require(__base + 'server/infrastructure/resources').factura;
 var ClientesRS = require(__base + 'server/infrastructure/resources').cliente;
 var fs = require("fs");
 
-function facturar(env,factura,clienteId,tipo) {
+function facturar(env,factura,clienteId,tipo,facturabase) {
     var cliente = await(ClientesRS.getCliente(clienteId));
     var xmlFirmado = '';
     var xmlResponse = '';
@@ -150,11 +150,11 @@ function facturar(env,factura,clienteId,tipo) {
                 to.push(factura.receptor.email)
             }
             const msg = {
-              to: to,
-              from: factura.emisor.email,
-              subject: 'Factura Electrónica N° '+ generaClaveRes.resp.consecutivo +' del Emisor: '+ factura.nombreComercial,
-              text: 'Factura Electrónica por KyRapps.com',
-              html: `<div>
+                    to: to,
+                    from: factura.emisor.email,
+                    subject: 'Factura Electrónica N° '+ generaClaveRes.resp.consecutivo +' del Emisor: '+ factura.nombreComercial,
+                    text: 'Factura Electrónica por KyRapps.com',
+                    html: `<div>
                         Factura Electronica N° `+generaClaveRes.resp.consecutivo+`<br>
                         <br>
                         Emitida por: ` + factura.emisor.nombre + `<br>
@@ -162,9 +162,37 @@ function facturar(env,factura,clienteId,tipo) {
                         <br>
                         Generada por medio de <a href="https://www.kyrapps.com" target="_blank">https://www.kyrapps.com</a>
                     </div>`,
+                    attachments: [
+                        {
+                          content: xmlFirmado,
+                          filename: 'xml-firmado.xml',
+                          type: 'text/xml',
+                          disposition: 'attachment',
+                          content_id: 'xmlfirmado-'+consultarResRaw.resp.fecha
+                        },
+                        {
+                          content: facturabase,
+                          filename: 'factura-'+consultarResRaw.resp.fecha+'.pdf',
+                          type: 'application/pdf',
+                          disposition: 'attachment',
+                          content_id: 'factura-'+consultarResRaw.resp.fecha
+                        },
+                        {
+                          content: xmlResponse,
+                          filename: 'xml-respuesta.xml',
+                          type: 'text/xml',
+                          disposition: 'attachment',
+                          content_id: 'xmlrespuesta-'+consultarResRaw.resp.fecha
+                        },
+                    ]
             };
             console.log('to',to);
-            sgMail.send(msg);
+            sgMail.send(msg).then(() => {
+                console.log('msg sent');
+              }).catch(e => {
+                console.log('error');
+                console.error(e.toString());
+              });
         }
     } else {
         consultaRes = {
