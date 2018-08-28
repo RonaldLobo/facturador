@@ -150,7 +150,7 @@ function facturar(env,factura,clienteId,tipo,facturabase) {
             }
             const msg = {
                     to: to,
-                    from: factura.emisor.email,
+                    from: 'facturas@kyrapps.com',
                     subject: 'Factura Electrónica N° '+ generaClaveRes.resp.consecutivo +' del Emisor: '+ factura.nombreComercial,
                     text: 'Factura Electrónica por KyRapps.com',
                     html: `<div>
