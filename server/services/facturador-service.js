@@ -145,7 +145,7 @@ function facturar(env,factura,clienteId,tipo,facturabase) {
                 'xmlrespuesta': xmlResponse
             };
             var to = [factura.emisor.email];
-            if(factura.omitirReceptor == false){
+            if(factura.omitirReceptor == "false"){
                 to.push(factura.receptor.email)
             }
             const msg = {
