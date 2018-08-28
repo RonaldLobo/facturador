@@ -144,7 +144,7 @@ function generaTE(
         console.log('incluyendo receptor',receptor_nombre);
         form.append('omitir_receptor', "false");
         form.append('receptor_nombre', receptor_nombre);
-        form.append('receptor_tipo_indetif', receptor_tipo_identif);
+        form.append('receptor_tipo_identif', receptor_tipo_identif);
         form.append('receptor_num_identif', receptor_num_identif);
         form.append('receptor_provincia', receptor_provincia);
         form.append('receptor_canton', receptor_canton);
