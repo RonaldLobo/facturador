@@ -135,9 +135,9 @@ function generaTE(
     form.append('total_comprobante', total_comprobante);
     form.append('otros', otros);
     form.append('detalles', JSON.stringify(detalles));
-    console.log('omitir_receptor',omitir_receptor);
+    console.log('omitir_receptor',omitir_receptor, typeof(omitir_receptor));
     console.log('detalles',JSON.stringify(detalles));
-    if(omitir_receptor == true){
+    if(omitir_receptor){
         console.log('omitiendo receptor');
         form.append('omitir_receptor', "true");
     } else {
