@@ -1,6 +1,8 @@
 'use strict';
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
+var sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 var FacturasRP = require(__base + 'server/infrastructure/repositories').facturas;
 var FacturasRS = require(__base + 'server/infrastructure/resources').factura;
 var ClientesRS = require(__base + 'server/infrastructure/resources').cliente;
@@ -143,6 +145,26 @@ function facturar(env,factura,clienteId,tipo) {
                 'xmlfirmado': xmlFirmado,
                 'xmlrespuesta': xmlResponse
             };
+            var to = [factura.emisor.email];
+            if(factura.omitirReceptor == false){
+                to.push(factura.receptor.email)
+            }
+            const msg = {
+              to: to,
+              from: factura.emisor.email,
+              subject: 'Factura Electrónica N° '+ generaClaveRes.resp.consecutivo +' del Emisor: '+ factura.nombreComercial,
+              text: 'Factura Electrónica por KyRapps.com',
+              html: `<div>
+                        Factura Electronica N° `+generaClaveRes.resp.consecutivo+`<br>
+                        <br>
+                        Emitida por: ` + factura.emisor.nombre + `<br>
+                        Nombre Comercial: ` + factura.nombreComercial + `<br>
+                        <br>
+                        Generada por medio de <a href="https://www.kyrapps.com" target="_blank">https://www.kyrapps.com</a>
+                    </div>`,
+            };
+            console.log('to',to);
+            sgMail.send(msg);
         }
     } else {
         consultaRes = {
