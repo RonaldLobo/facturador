@@ -191,7 +191,7 @@ function facturar(env,factura,clienteId,tipo,facturabase) {
                 console.log('msg sent');
               }).catch(error => {
                 console.log('error enviando');
-                console.log(error.toString();
+                console.log(error.toString());
               });
         }
     } else {
