@@ -8,6 +8,8 @@ function errorResponseHandler(response, error) {
 }
 
 function successResponseHandler(response, result) {
+    console.log('sending result');
+    console.log(result);
     return response
         .status(constants.codes.SUCCESS)
         .json(result);
