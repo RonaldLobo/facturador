@@ -189,9 +189,9 @@ function facturar(env,factura,clienteId,tipo,facturabase) {
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
             sgMail.send(msg).then(() => {
                 console.log('msg sent');
-              }).catch(e => {
+              }).catch(error => {
                 console.log('error enviando');
-                console.error(e);
+                console.log(error);
               });
         }
     } else {
