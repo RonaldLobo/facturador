@@ -79,7 +79,7 @@ function facturar(env,factura,clienteId,tipo) {
             factura.omitirReceptor
             ));
         console.log('generarTERes ---------------');
-        // console.log(generarTERes);
+        console.log(generarTERes);
         console.log('--------------- ');
         var firmarRes = await (FacturasRP.firmar(cliente.cert,generarTERes.resp.xml,cliente.pinCert,tipo));
         console.log('firmarRes ---------------');
