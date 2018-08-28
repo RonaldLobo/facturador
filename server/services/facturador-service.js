@@ -2,7 +2,6 @@
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 var FacturasRP = require(__base + 'server/infrastructure/repositories').facturas;
 var FacturasRS = require(__base + 'server/infrastructure/resources').factura;
 var ClientesRS = require(__base + 'server/infrastructure/resources').cliente;
@@ -186,11 +185,12 @@ function facturar(env,factura,clienteId,tipo,facturabase) {
                         },
                     ]
             };
-            console.log('to',to);
+            console.log('to',to,process.env.SENDGRID_API_KEY);
+            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
             sgMail.send(msg).then(() => {
                 console.log('msg sent');
               }).catch(e => {
-                console.log('error');
+                console.log('error enviando');
                 console.error(e);
               });
         }
