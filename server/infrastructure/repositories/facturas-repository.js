@@ -137,7 +137,7 @@ function generaTE(
     form.append('detalles', JSON.stringify(detalles));
     console.log('omitir_receptor',omitir_receptor);
     console.log('detalles',JSON.stringify(detalles));
-    if(omitir_receptor == false){
+    if(omitir_receptor == true){
         console.log('omitiendo receptor');
         form.append('omitir_receptor', "true");
     } else {
