@@ -7,11 +7,11 @@ var routes = require('express').Router();
 
 function facturar(request, response) {
     console.log('POST factura');
-    // console.log('Debug POST factura',request.body);
+    console.log('Debug POST factura',request.query.con);
     var result;
     try {
         if(request.query.con){
-            result = await (service.generaProximoCons.facturar(request.body.factura,request.body.cliente.id,'TE'));
+            result = await (service.facturadorService.generaProximoCons(request.body.factura,request.body.cliente.id,'TE'));
         } else {
             result = await (service.facturadorService.facturar('api-stag',request.body.factura,request.body.cliente.id,'TE',request.body.facturabase.base));
         
