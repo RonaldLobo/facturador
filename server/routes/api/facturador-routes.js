@@ -11,9 +11,10 @@ function facturar(request, response) {
     var result;
     try {
         if(request.query.con){
-            result = await (service.facturadorService.facturar('api-stag',request.body.factura,request.body.cliente.id,'TE',request.body.facturabase.base));
-        } else {
             result = await (service.generaProximoCons.facturar(request.body.factura,request.body.cliente.id,'TE'));
+        } else {
+            result = await (service.facturadorService.facturar('api-stag',request.body.factura,request.body.cliente.id,'TE',request.body.facturabase.base));
+        
         }
         return handlers.successResponseHandler(response, result);
     } catch (error) {
