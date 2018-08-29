@@ -7,6 +7,18 @@ var FacturasRS = require(__base + 'server/infrastructure/resources').factura;
 var ClientesRS = require(__base + 'server/infrastructure/resources').cliente;
 var fs = require("fs");
 
+function generaProximoCons(factura,clienteId,tipo){
+    var cliente = await(ClientesRS.getCliente(clienteId));
+    var generaClaveRes;
+    if(cliente){
+        var str = "" + (cliente.consecutivo++);
+        var pad = "000000000"
+        var con = pad.substring(0, pad.length - str.length) + str
+        generaClaveRes = await (FacturasRP.generaClave(tipo,cliente.tipoCedula,cliente.cedula,'506',con,factura.situacion,'00000010'));
+    }
+    return generaClaveRes;
+}
+
 function facturar(env,factura,clienteId,tipo,facturabase) {
     var cliente = await(ClientesRS.getCliente(clienteId));
     var xmlFirmado = '';
@@ -110,7 +122,7 @@ function facturar(env,factura,clienteId,tipo,facturabase) {
         async function consultarRes(){
             consultarResRaw = await (FacturasRP.consulta(env,tokenRes.resp.access_token,generaClaveRes.resp.clave));
             console.log('consultarResRaw ---------------');
-            console.log(consultarResRaw);
+            // console.log(consultarResRaw);
             console.log('---------------');
             if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido'){
                 await sleep(1000)
@@ -204,3 +216,4 @@ function facturar(env,factura,clienteId,tipo,facturabase) {
 }
 
 module.exports.facturar = async(facturar);
+module.exports.generaProximoCons = async(generaProximoCons);
