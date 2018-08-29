@@ -10,7 +10,7 @@ function facturar(request, response) {
     console.log('Debug POST factura',request.query.con);
     var result;
     try {
-        if(request.query.con){
+        if(request.body.con == true){
             result = await (service.facturadorService.generaProximoCons(request.body.factura,request.body.cliente.id,'TE'));
         } else {
             result = await (service.facturadorService.facturar('api-stag',request.body.factura,request.body.cliente.id,'TE',request.body.facturabase.base));
