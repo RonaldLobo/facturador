@@ -116,7 +116,7 @@ function facturar(factura,clienteId,tipo,facturabase) {
                 firmarRes.resp.xmlFirmado
             ));
         console.log('envioRes ---------------');
-        // console.log(envioRes);
+        console.log(envioRes);
         console.log('---------------');
         const sleep = ms => new Promise(res => setTimeout(res, ms));
         var consultarResRaw;
