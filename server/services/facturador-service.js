@@ -123,7 +123,7 @@ function facturar(factura,clienteId,tipo,facturabase) {
         async function consultarRes(){
             consultarResRaw = await (FacturasRP.consulta(env,tokenRes.resp.access_token,generaClaveRes.resp.clave));
             console.log('consultarResRaw ---------------');
-            // console.log(consultarResRaw);
+            console.log(consultarResRaw);
             console.log('---------------');
             if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido'){
                 await sleep(1000)
