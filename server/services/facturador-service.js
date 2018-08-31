@@ -102,7 +102,7 @@ function facturar(factura,clienteId,tipo,facturabase) {
         console.log('---------------');
         var tokenRes = await (FacturasRP.token(env,cliente.usuarioHacienda, cliente.claveHacienda));
         console.log('tokenRes ---------------');
-        // console.log(tokenRes);
+        console.log(tokenRes);
         console.log('---------------');
         var envioRes = await (FacturasRP.envioMH(
                 tokenRes.resp.access_token,
@@ -116,7 +116,7 @@ function facturar(factura,clienteId,tipo,facturabase) {
                 firmarRes.resp.xmlFirmado
             ));
         console.log('envioRes ---------------');
-        console.log(envioRes);
+        // console.log(envioRes);
         console.log('---------------');
         const sleep = ms => new Promise(res => setTimeout(res, ms));
         var consultarResRaw;
