@@ -128,7 +128,7 @@ function facturar(factura,clienteId,tipo,facturabase) {
             console.log('---------------');
             if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido'){
                 console.log('va de vuelta')
-                await sleep(1000);
+                // await sleep(1000);
                 console.log('es el tiempo');
                 await(consultarRes());
             } else {
