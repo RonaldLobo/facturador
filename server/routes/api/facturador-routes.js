@@ -13,7 +13,7 @@ function facturar(request, response) {
         if(request.body.con == true){
             result = await (service.facturadorService.generaProximoCons(request.body.factura,request.body.cliente.id,'TE'));
         } else {
-            result = await (service.facturadorService.facturar('api-stag',request.body.factura,request.body.cliente.id,'TE',request.body.facturabase.base));
+            result = await (service.facturadorService.facturar(request.body.factura,request.body.cliente.id,'TE',request.body.facturabase.base));
         
         }
         return handlers.successResponseHandler(response, result);

@@ -12,7 +12,8 @@ var schema = new mongoose.Schema({
     claveApi: { type: String, require: true},
     tipoCedula: { type: String, require: true},
     consecutivo: { type: Number, require: true},
-    pinCert: { type: String, require: true}
+    pinCert: { type: String, require: true},
+    env: { type: String }
 },{ 
 	versionKey: false 
 });

@@ -19,8 +19,9 @@ function generaProximoCons(factura,clienteId,tipo){
     return generaClaveRes;
 }
 
-function facturar(env,factura,clienteId,tipo,facturabase) {
+function facturar(factura,clienteId,tipo,facturabase) {
     var cliente = await(ClientesRS.getCliente(clienteId));
+    var env = cliente.env || 'api-stag';
     var xmlFirmado = '';
     var xmlResponse = '';
     var consultaRes;
