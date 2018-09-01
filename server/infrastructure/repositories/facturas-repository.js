@@ -343,6 +343,7 @@ function consulta(client_id,token,clave) {
 
 module.exports = {
     nuevoUsuario: async(nuevoUsuario),
+    tokenRefresh: async(tokenRefresh),
     iniciarSesion: async(iniciarSesion),
     certificadoUP: async(certificadoUP),
     generaClave: async(generaClave),
