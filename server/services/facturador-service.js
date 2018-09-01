@@ -118,16 +118,17 @@ function facturar(factura,clienteId,tipo,facturabase) {
         console.log('envioRes ---------------');
         // console.log(envioRes);
         console.log('---------------');
-        const sleep = ms => new Promise(res => setTimeout(res, ms));
+        // const sleep = ms => new Promise(res => setTimeout(res, ms));
         var times = 0;
         var consultarResRaw;
+        var seconds = 2;
         async function consultarRes(){
             console.log('consulta inicial');
             consultarResRaw = await (FacturasRP.consulta(env,tokenRes.resp.access_token,generaClaveRes.resp.clave));
             console.log('consultarResRaw ---------------');
             console.log(consultarResRaw);
             console.log('---------------');
-            if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido' && times < 40){
+            if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido' && times < 10){
                 times++;
                 console.log('va de vuelta')
                 var waitTill = new Date(new Date().getTime() + seconds * 1000);
