@@ -237,15 +237,19 @@ function consultaFacturaRealizada(factura,clienteId,facturabase){
     var consultarResRaw;
     var consultaRes;
     var xmlResponse;
+    var times = 0;
+    var seconds = 2;
     async function consultarRes(){
         console.log('consulta inicial');
         consultarResRaw = await (FacturasRP.consulta(env,tokenRes.resp.access_token,factura.clave));
         console.log('consultarResRaw ---------------');
         console.log(consultarResRaw);
         console.log('---------------');
-        if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido'){
+        if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido' && times < 10){
             console.log('va de vuelta')
-            // await sleep(1000);
+            times++;
+            var waitTill = new Date(new Date().getTime() + seconds * 1000);
+            while(waitTill > new Date()){}
             console.log('es el tiempo');
             await(consultarRes());
         } else {
