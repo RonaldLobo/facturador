@@ -245,7 +245,7 @@ function consultaFacturaRealizada(factura,clienteId,facturabase){
         console.log('consultarResRaw ---------------');
         console.log(consultarResRaw);
         console.log('---------------');
-        if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido' && times < 10){
+        if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido' && times < 6){
             console.log('va de vuelta')
             times++;
             var waitTill = new Date(new Date().getTime() + seconds * 1000);
