@@ -10,6 +10,9 @@ function facturar(request, response) {
     console.log('Debug POST factura',request.query.con);
     var result;
     try {
+        if(request.body.conrealizada){
+            result = await (service.facturadorService.consultaFacturaRealizada(request.body.factura,request.body.cliente.id,request.body.facturabase.base));
+        }
         if(request.body.con == true){
             result = await (service.facturadorService.generaProximoCons(request.body.factura,request.body.cliente.id,'TE'));
         } else {

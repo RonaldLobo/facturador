@@ -297,6 +297,18 @@ function token(client_id,username,password) {
     return res;
 }
 
+function tokenRefresh(client_id,refreshToken) {
+    const form = new FormData();
+    form.append('w', 'token');
+    form.append('r', 'refresh');
+    form.append('grant_type', 'refresh_token');
+    form.append('client_id', client_id);
+    form.append('refresh_token', refreshToken);
+    var rawRes = await(fetch(apiUrl, { method: 'POST', body: form }));
+    var res = await(rawRes.json());
+    return res;
+}
+
 function envioMH(token,clave,fecha,emi_tipoIdentificacion,emi_numeroIdentificacion,recp_tipoIdentificacion,recp_numeroIdentificacion,client_id,comprobanteXml) {
     const form = new FormData();
     form.append('w', 'send');
