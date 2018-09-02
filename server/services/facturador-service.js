@@ -282,7 +282,6 @@ function consultaFacturaRealizada(factura,clienteId,facturabase){
             'fecha': consultarResRaw.resp.fecha,
             'cliente': cliente.cedula,
             'respuesta': consultarResRaw.resp['ind-estado'],
-            'xmlfirmado': xmlFirmado,
             'xmlrespuesta': xmlResponse
         };
         var to = [factura.emisor.email];
