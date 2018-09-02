@@ -234,6 +234,12 @@ function consultaFacturaRealizada(factura,clienteId,facturabase){
     var cliente = await(ClientesRS.getCliente(clienteId));
     var env = cliente.env || 'api-stag';
     var tokenRes = await (FacturasRP.tokenRefresh(env,factura.refreshToken));
+    if(tokenRes.resp.error == "invalid_grant"){
+        return {
+            'estado': 'fail',
+            'error': 'token_expirado'
+        };
+    }
     var consultarResRaw;
     var consultaRes;
     var xmlResponse;
