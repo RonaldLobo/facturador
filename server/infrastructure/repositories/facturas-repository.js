@@ -283,7 +283,7 @@ function firmar(p12Url,inXml,pin,tipodoc) {
         // let response = _response;
         console.log('responseBody');
         console.log(responseBody);
-        response._json = JSON.parse(responseBody);
+        console.log(JSON.parse(responseBody));
     }).catch(function (err) {
         console.log('err');
         console.log(err);
