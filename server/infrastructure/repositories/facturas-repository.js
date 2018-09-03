@@ -280,6 +280,8 @@ function firmar(p12Url,inXml,pin,tipodoc) {
     form.append('pinP12', pin);
     form.append('tipodoc', tipodoc);
     var rawRes = await(fetch(apiUrl, { method: 'POST', body: form }));
+    console.log(rawRes);
+    console.log(JSON.stringify(rawRes));
     var res = await(rawRes.json());
     return res;
 }
