@@ -163,7 +163,8 @@ function generaTE(
     return res;
 }
 
-function generaFE(clave,
+function generaFE(
+        clave,
         consecutivo,
         fecha_emision,
         emisor_nombre,
@@ -187,6 +188,7 @@ function generaFE(clave,
         receptor_canton,
         receptor_distrito,
         receptor_barrio,
+        receptor_otras_senas,
         receptor_cod_pais_tel,
         receptor_tel,
         receptor_cod_pais_fax,
@@ -210,7 +212,9 @@ function generaFE(clave,
         total_comprobante,
         otros,
         detalles,
-        omitir_receptor) {
+        omitir_receptor
+        ) {
+    console.log('generaFE');
     const form = new FormData();
     form.append('w', 'genXML');
     form.append('r', 'gen_xml_fe');
@@ -248,12 +252,17 @@ function generaFE(clave,
     form.append('total_impuestos', total_impuestos);
     form.append('total_comprobante', total_comprobante);
     form.append('otros', otros);
-    form.append('detalles', detalles);
-    if(omitir_receptor){
-        form.append('omitir_receptor', omitir_receptor);
+    form.append('detalles', JSON.stringify(detalles));
+    console.log('omitir_receptor',omitir_receptor, typeof(omitir_receptor));
+    console.log('detalles',JSON.stringify(detalles));
+    if(omitir_receptor === "true"){
+        console.log('omitiendo receptor');
+        form.append('omitir_receptor', "true");
     } else {
+        console.log('incluyendo receptor',receptor_nombre);
+        form.append('omitir_receptor', "false");
         form.append('receptor_nombre', receptor_nombre);
-        form.append('receptor_tipo_indetif', receptor_tipo_indetif);
+        form.append('receptor_tipo_identif', receptor_tipo_identif);
         form.append('receptor_num_identif', receptor_num_identif);
         form.append('receptor_provincia', receptor_provincia);
         form.append('receptor_canton', receptor_canton);
@@ -266,6 +275,7 @@ function generaFE(clave,
         form.append('receptor_fax', receptor_fax);
         form.append('receptor_email', receptor_email);
     }
+    console.log(JSON.stringify(form))
     var rawRes = await(fetch(apiUrl, { method: 'POST', body: form }));
     var res = await(rawRes.json());
     return res;

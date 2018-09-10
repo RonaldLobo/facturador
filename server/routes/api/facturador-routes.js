@@ -13,10 +13,11 @@ function facturar(request, response) {
         if(request.body.conrealizada){
             result = await (service.facturadorService.consultaFacturaRealizada(request.body.factura,request.body.cliente.id,request.body.facturabase.base));
         }
+        var tipoFA = (request.body.factura.omitirReceptor == "false") ? 'FE': 'TE';
         if(request.body.con == true){
-            result = await (service.facturadorService.generaProximoCons(request.body.factura,request.body.cliente.id,'TE'));
+            result = await (service.facturadorService.generaProximoCons(request.body.factura,request.body.cliente.id,tipoFA));
         } else {
-            result = await (service.facturadorService.facturar(request.body.factura,request.body.cliente.id,'TE',request.body.facturabase.base));
+            result = await (service.facturadorService.facturar(request.body.factura,request.body.cliente.id,tipoFA,request.body.facturabase.base));
         
         }
         return handlers.successResponseHandler(response, result);
