@@ -411,7 +411,7 @@ function aprobar(clienteId,data){
         console.log('con',con);
         var generaClaveRes = await (FacturasRP.generaClave(data.tipo,cliente.tipoCedula,cliente.cedula,'506',con,'normal','00000010'));
         console.log('generaClaveRes ----------------');
-        console.log(generaMensaje);
+        console.log(generaClaveRes);
         console.log('---------------');
 
         var generaXMLRes = await (FacturasRP.generaMensaje(
