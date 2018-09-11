@@ -70,7 +70,7 @@ function generaMensaje(clave,
     form.append('w', 'genXML');
     form.append('r', 'gen_xml_mr');
     form.append('clave', clave);
-    form.append('consecutivo', consecutivo);
+    form.append('numero_consecutivo_receptor', consecutivo);
     form.append('fecha_emision_doc', fecha_emision_doc);
     form.append('numero_cedula_emisor', numero_cedula_emisor);
     form.append('numero_cedula_receptor', numero_cedula_receptor);
