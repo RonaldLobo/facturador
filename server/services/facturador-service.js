@@ -440,7 +440,7 @@ function aprobar(clienteId,data){
         var envioRes = await (FacturasRP.envioMH(
                 tokenRes.resp.access_token,
                 generaClaveRes.resp.clave,
-                data.fecha,
+                data.fecha_emision_doc,
                 data.tipo_cedula_emisor,
                 data.numero_cedula_emisor,
                 data.tipo_cedula_receptor,
