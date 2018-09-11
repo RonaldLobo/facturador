@@ -199,7 +199,12 @@ function facturar(factura,clienteId,tipo,facturabase) {
             var clienteActualizado = await(ClientesRS.updateCliente(cliente));
             console.log('act');
             console.log(clienteActualizado);
-            if (consultarResRaw.resp['Status'] === '0'){
+            if (consultarResRaw.resp['error']){
+                consultaRes = {
+                    'estado': 'fail',
+                    'error': 'Hay un error en el Ministerio de Hacienda, por favor volverlo a intentar'
+                };
+            } else if (consultarResRaw.resp['Status'] === '0'){
                 consultaRes = {
                     'estado': 'fail',
                     'error': 'Hay un error en el Ministerio de Hacienda, por favor volverlo a intentar'
