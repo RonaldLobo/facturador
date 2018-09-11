@@ -12,6 +12,7 @@ var schema = new mongoose.Schema({
     claveApi: { type: String, require: true},
     tipoCedula: { type: String, require: true},
     consecutivo: { type: Number, require: true},
+    consecutivoRespuesta: { type: Number, default: 1},
     pinCert: { type: String, require: true},
     env: { type: String }
 },{ 

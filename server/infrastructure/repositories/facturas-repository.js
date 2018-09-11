@@ -46,6 +46,32 @@ function generaClave(tipoDocumento,tipoCedula,cedula,codigoPais,consecutivo,situ
     return res;
 }
 
+function generaMensaje(clave,
+        consecutivo,
+        fecha_emision_doc,
+        numero_cedula_emisor,
+        numero_cedula_receptor,
+        mensaje,
+        detalle_mensaje,
+        monto_total_impuesto,
+        total_factura) {
+    const form = new FormData();
+    form.append('w', 'genXML');
+    form.append('r', 'gen_xml_mr');
+    form.append('clave', clave);
+    form.append('consecutivo', consecutivo);
+    form.append('fecha_emision_doc', fecha_emision_doc);
+    form.append('numero_cedula_emisor', numero_cedula_emisor);
+    form.append('numero_cedula_receptor', numero_cedula_receptor);
+    form.append('mensaje', mensaje);
+    form.append('detalle_mensaje', detalle_mensaje);
+    form.append('monto_total_impuesto', monto_total_impuesto);
+    form.append('total_factura', total_factura);
+    var rawRes = await(fetch(apiUrl, { method: 'POST', body: form }));
+    var res = await(rawRes.json());
+    return res;
+}
+
 function generaTE(
         clave,
         consecutivo,
@@ -357,6 +383,7 @@ module.exports = {
     iniciarSesion: async(iniciarSesion),
     certificadoUP: async(certificadoUP),
     generaClave: async(generaClave),
+    generaMensaje: async(generaMensaje),
     generaTE: async(generaTE),
     generaFE: async(generaFE),
     firmar: async(firmar),

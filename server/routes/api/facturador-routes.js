@@ -27,6 +27,20 @@ function facturar(request, response) {
     }
 }
 
+function aprobar(request, response) {
+    console.log('POST aprobar');
+    console.log('Debug POST aprobar');
+    var result;
+    try {
+        result = await (service.facturadorService.aprobar(request.body.cliente.id,request.body.datos));
+        return handlers.successResponseHandler(response, result);
+    } catch (error) {
+        console.log('error',error);
+        return handlers.errorResponseHandler(response, error);
+    }
+}
+
 routes.post('/', async(facturar));
+routes.post('/aprobar/', async(aprobar));
 
 module.exports = routes;

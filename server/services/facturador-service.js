@@ -391,9 +391,115 @@ function consultaFacturaRealizada(factura,clienteId,facturabase){
     return consultaRes;
 }
 
+function aprobar(clienteId,data){
+    var cliente = await(ClientesRS.getCliente(clienteId));
+    var env = cliente.env || 'api-stag';
+    var xmlFirmado = '';
+    var xmlResponse = '';
+    var consultaRes;
+    if(cliente){
+        var iniciarSesionRes = await (FacturasRP.iniciarSesion(cliente.usuarioApi,cliente.claveApi));
+        // Revisar si existe el cert ya????
+        // Obtener el consecutivo
+        console.log('iniciarSesionRes ---------------');
+        console.log(iniciarSesionRes);
+        console.log('---------------');
+        console.log(Number(cliente.consecutivoRespuesta));
+        var str = "" + (cliente.consecutivoRespuesta++);
+        var pad = "000000000"
+        var con = pad.substring(0, pad.length - str.length) + str;
+        console.log('con',con);
+        var generaClaveRes = await (FacturasRP.generaClave(data.tipo,cliente.tipoCedula,cliente.cedula,'506',con,'normal','00000010'));
+        console.log('generaClaveRes ----------------');
+        console.log(generaMensaje);
+        console.log('---------------');
+
+        var generaXMLRes = await (FacturasRP.generaMensaje(
+            data.clave,
+            generaClaveRes.resp.consecutivo,
+            data.fecha_emision_doc,
+            data.numero_cedula_emisor,
+            data.numero_cedula_receptor,
+            data.mensaje,
+            data.detalle_mensaje,
+            data.monto_total_impuesto,
+            data.total_factura
+            ));
+
+        var firmarRes = await (FacturasRP.firmar(cliente.cert,generaXMLRes.resp.xml,cliente.pinCert,data.tipo));
+        console.log('firmarRes ---------------');
+        console.log(firmarRes);
+        xmlFirmado = firmarRes.resp.xmlFirmado;
+        console.log('---------------');
+        var tokenRes = await (FacturasRP.token(env,cliente.usuarioHacienda, cliente.claveHacienda));
+        console.log('tokenRes ---------------');
+        console.log(tokenRes);
+        console.log('---------------');
+        var envioRes = await (FacturasRP.envioMH(
+                tokenRes.resp.access_token,
+                generaClaveRes.resp.clave,
+                data.fecha,
+                data.tipo_cedula_emisor,
+                data.numero_cedula_emisor,
+                data.tipo_cedula_receptor,
+                data.numero_cedula_receptor,
+                env,
+                firmarRes.resp.xmlFirmado
+            ));
+        console.log('envioRes ---------------');
+        // console.log(envioRes);
+        console.log('---------------');
+        // const sleep = ms => new Promise(res => setTimeout(res, ms));
+        var times = 0;
+        var consultarResRaw;
+        var seconds = 2;
+        async function consultarRes(){
+            console.log('consulta inicial');
+            consultarResRaw = await (FacturasRP.consulta(env,tokenRes.resp.access_token,generaClaveRes.resp.clave));
+            console.log('consultarResRaw ---------------');
+            console.log(consultarResRaw);
+            console.log('---------------');
+            if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido' && times < 10){
+                times++;
+                console.log('va de vuelta')
+                var waitTill = new Date(new Date().getTime() + seconds * 1000);
+                while(waitTill > new Date()){}
+                console.log('es el tiempo');
+                await(consultarRes());
+            } else {
+                xmlResponse = consultarResRaw.resp['respuesta-xml'];
+            }
+        }
+        await(consultarRes());
+        var clienteActualizado = await(ClientesRS.updateCliente(cliente));
+        if (consultarResRaw.resp['Status'] === '0'){
+            consultaRes = {
+                'estado': 'fail',
+                'error': 'Hay un error en el Ministerio de Hacienda, por favor volverlo a intentar'
+            };
+        } else if (consultarResRaw.resp['ind-estado'] === 'recibido'){
+            consultaRes = {
+                'estado': 'fail',
+                'error': 'recibido',
+                'refreshToken': tokenRes.resp.refresh_token
+            };
+        } else {
+            consultaRes = {
+                'estado': 'success',
+                'fecha': consultarResRaw.resp.fecha,
+                'cliente': cliente.cedula,
+                'respuesta': consultarResRaw.resp['ind-estado'],
+                'xmlrespuesta': xmlResponse
+            };
+        }
+        return consultaRes;
+    }
+}
+
 module.exports.consultaFacturaRealizada = async(consultaFacturaRealizada);
 module.exports.facturar = async(facturar);
 module.exports.generaProximoCons = async(generaProximoCons);
+module.exports.aprobar = async(aprobar);
 
 
 
