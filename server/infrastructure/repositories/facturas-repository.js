@@ -56,6 +56,17 @@ function generaMensaje(clave,
         monto_total_impuesto,
         total_factura) {
     const form = new FormData();
+    console.log('gen---------')
+    console.log(clave,
+        consecutivo,
+        fecha_emision_doc,
+        numero_cedula_emisor,
+        numero_cedula_receptor,
+        mensaje,
+        detalle_mensaje,
+        monto_total_impuesto,
+        total_factura);
+    console.log('gen---------')
     form.append('w', 'genXML');
     form.append('r', 'gen_xml_mr');
     form.append('clave', clave);
