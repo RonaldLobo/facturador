@@ -425,7 +425,9 @@ function aprobar(clienteId,data){
             data.monto_total_impuesto,
             data.total_factura
             ));
-
+        console.log('generaXMLRes ----------------');
+        console.log(generaXMLRes);
+        console.log('---------------');
         var firmarRes = await (FacturasRP.firmar(cliente.cert,generaXMLRes.resp.xml,cliente.pinCert,data.tipo));
         console.log('firmarRes ---------------');
         console.log(firmarRes);
