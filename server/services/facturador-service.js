@@ -248,7 +248,7 @@ function facturar(factura,clienteId,tipo,facturabase) {
                             Emitida por: ` + factura.emisor.nombre + `<br>
                             Nombre Comercial: ` + factura.nombreComercial + `<br>
                             <br>
-                            Generada por medio de <a href="https://www.kyrapps.com" target="_blank">https://www.kyrapps.com</a>
+                            Generada por medio de <a href="http://www.kyrapps.com" target="_blank">http://www.kyrapps.com</a>
                         </div>`,
                         attachments: [
                             {
@@ -373,7 +373,7 @@ function consultaFacturaRealizada(factura,clienteId,facturabase){
                 Emitida por: ` + factura.emisor.nombre + `<br>
                 Nombre Comercial: ` + factura.nombreComercial + `<br>
                 <br>
-                Generada por medio de <a href="https://www.kyrapps.com" target="_blank">https://www.kyrapps.com</a>
+                Generada por medio de <a href="http://www.kyrapps.com" target="_blank">http://www.kyrapps.com</a>
             </div>`,
             attachments: [
                 {
@@ -525,7 +525,7 @@ function aprobar(clienteId,data){
                         <br>
                         Emitida por: ` + data.numero_cedula_emisor + `<br>
                         <br>
-                        Aceptación generada por medio de <a href="https://www.kyrapps.com" target="_blank">https://www.kyrapps.com</a>
+                        Aceptación generada por medio de <a href="http://www.kyrapps.com" target="_blank">http://www.kyrapps.com</a>
                     </div>`
                 };
                 console.log('to',to,process.env.SENDGRID_API_KEY);
@@ -621,7 +621,7 @@ function revisar(clienteId,data){
                         <br>
                         Emitida por: ` + data.numero_cedula_emisor + `<br>
                         <br>
-                        Aceptación generada por medio de <a href="https://www.kyrapps.com" target="_blank">https://www.kyrapps.com</a>
+                        Aceptación generada por medio de <a href="http://www.kyrapps.com" target="_blank">http://www.kyrapps.com</a>
                     </div>`
                 };
                 console.log('to',to,process.env.SENDGRID_API_KEY);
