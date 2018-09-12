@@ -32,7 +32,11 @@ function aprobar(request, response) {
     console.log('Debug POST aprobar');
     var result;
     try {
-        result = await (service.facturadorService.aprobar(request.body.cliente.id,request.body.datos));
+        if (request.body.datos.revisar && request.body.datos.revisar == true) {
+            result = await (service.facturadorService.revisar(request.body.cliente.id,request.body.datos));
+        } else {
+            result = await (service.facturadorService.aprobar(request.body.cliente.id,request.body.datos));
+        }
         return handlers.successResponseHandler(response, result);
     } catch (error) {
         console.log('error',error);

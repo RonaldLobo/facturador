@@ -548,10 +548,107 @@ function aprobar(clienteId,data){
     }
 }
 
+function revisar(clienteId,data){
+    var cliente = await(ClientesRS.getCliente(clienteId));
+    var env = cliente.env || 'api-stag';
+    var xmlFirmado = '';
+    var xmlResponse = '';
+    var consultarResRaw;
+    var consultaRes;
+    var times = 0;
+    var seconds = 2;
+    if(cliente){
+        try{
+            var iniciarSesionRes = await (FacturasRP.iniciarSesion(cliente.usuarioApi,cliente.claveApi));
+            // Revisar si existe el cert ya????
+            // Obtener el consecutivo
+            console.log('iniciarSesionRes ---------------');
+            console.log(iniciarSesionRes);
+            console.log('---------------');
+            var tokenRes = await (FacturasRP.tokenRefresh(env,data.refresh));
+            if(tokenRes.resp.error == "invalid_grant"){
+                return {
+                    'estado': 'fail',
+                    'error': 'token_expirado'
+                };
+            }
+            async function consultarRes(){
+                console.log('consulta inicial');
+                consultarResRaw = await (FacturasRP.consulta(env,tokenRes.resp.access_token,data.clave));
+                console.log('consultarResRaw ---------------');
+                console.log(consultarResRaw);
+                console.log('---------------');
+                if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido' && times < 4){
+                    console.log('va de vuelta')
+                    times++;
+                    var waitTill = new Date(new Date().getTime() + seconds * 1000);
+                    while(waitTill > new Date()){}
+                    console.log('es el tiempo');
+                    await(consultarRes());
+                } else {
+                    xmlResponse = consultarResRaw.resp['respuesta-xml'];
+                }
+            }
+            await(consultarRes());
+
+            if (consultarResRaw.resp['Status'] === '0'){
+                consultaRes = {
+                    'estado': 'fail',
+                    'error': 'Hay un error en el Ministerio de Hacienda, por favor volverlo a intentar'
+                };
+            } else if (consultarResRaw.resp['ind-estado'] === 'recibido'){
+                consultaRes = {
+                    'estado': 'fail',
+                    'error': 'recibido',
+                    'refreshToken': tokenRes.resp.refresh_token
+                };
+            } else {
+                consultaRes = {
+                    'estado': 'success',
+                    'fecha': consultarResRaw.resp.fecha,
+                    'cliente': cliente.cedula,
+                    'respuesta': consultarResRaw.resp['ind-estado'],
+                    'xmlrespuesta': xmlResponse
+                };
+                var to = [cliente.correo];
+                const msg = {
+                    to: to,
+                    from: 'facturas@kyrapps.com',
+                    subject: 'Factura Electrónica con clave '+ data.clave +' del Emisor: '+ data.numero_cedula_emisor,
+                    text: 'Factura Electrónica por KyRapps.com',
+                    html: `<div>
+                        Su factura con clave N° `+data.clave+` a sido aceptada<br>
+                        <br>
+                        Emitida por: ` + data.numero_cedula_emisor + `<br>
+                        <br>
+                        Aceptación generada por medio de <a href="https://www.kyrapps.com" target="_blank">https://www.kyrapps.com</a>
+                    </div>`
+                };
+                console.log('to',to,process.env.SENDGRID_API_KEY);
+                sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                sgMail.send(msg).then(() => {
+                    console.log('msg sent');
+                }).catch(error => {
+                    console.log('error enviando');
+                    console.log(error.toString());
+                });
+            }
+
+        } catch(e){
+            consultaRes = {
+                'estado': 'error en hacienda',
+                'error': e.toString()
+            }
+        }
+        return consultaRes;
+    }
+}
+
 module.exports.consultaFacturaRealizada = async(consultaFacturaRealizada);
 module.exports.facturar = async(facturar);
 module.exports.generaProximoCons = async(generaProximoCons);
 module.exports.aprobar = async(aprobar);
+module.exports.revisar = async(revisar);
 
 
 
