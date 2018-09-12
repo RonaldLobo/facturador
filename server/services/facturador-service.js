@@ -214,7 +214,8 @@ function facturar(factura,clienteId,tipo,facturabase) {
                     'estado': 'fail',
                     'error': 'recibido',
                     'clave': generaClaveRes.resp.clave,
-                    'refreshToken': tokenRes.resp.refresh_token
+                    'refreshToken': tokenRes.resp.refresh_token,
+                    'xml': generarTERes.resp.xml
                 };
             } else {
                 var dir = __base + 'server/facturas/'+cliente.cedula;
@@ -383,12 +384,19 @@ function consultaFacturaRealizada(factura,clienteId,facturabase){
                   content_id: 'factura-'+consultarResRaw.resp.fecha
                 },
                 {
-                  content: xmlResponse,
-                  filename: 'xml-respuesta.xml',
+                  content: factura.xml,
+                  filename: 'factura-'+consultarResRaw.resp.fecha+'.xml',
                   type: 'text/xml',
                   disposition: 'attachment',
-                  content_id: 'xmlrespuesta-'+consultarResRaw.resp.fecha
+                  content_id: 'factura-'+consultarResRaw.resp.fecha
                 },
+                {
+                  content: xmlResponse,
+                  filename: 'respuesta-'+consultarResRaw.resp.fecha+'.xml',
+                  type: 'text/xml',
+                  disposition: 'attachment',
+                  content_id: 'respuesta-'+consultarResRaw.resp.fecha
+                }
             ]
         };
         console.log('to',to,process.env.SENDGRID_API_KEY);
