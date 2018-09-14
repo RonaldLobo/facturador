@@ -449,6 +449,9 @@ function aprobar(clienteId,data){
             console.log('generaXMLRes ----------------');
             console.log(generaXMLRes);
             console.log('---------------');
+            console.log('Firmar Inputs----------------');
+            console.log(cliente.cert,cliente.pinCert,data.tipo);
+            console.log('---------------');
             var firmarRes = await (FacturasRP.firmar(cliente.cert,generaXMLRes.resp.xml,cliente.pinCert,data.tipo));
             console.log('firmarRes ---------------');
             console.log(firmarRes);
