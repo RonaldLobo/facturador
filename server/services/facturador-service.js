@@ -253,21 +253,21 @@ function facturar(factura,clienteId,tipo,facturabase) {
                         attachments: [
                             {
                               content: xmlFirmado,
-                              filename: 'xml-firmado.xml',
+                              filename: 'factura-'+factura.fecha+'.xml',
                               type: 'text/xml',
                               disposition: 'attachment',
                               content_id: 'xmlfirmado-'+consultarResRaw.resp.fecha
                             },
                             {
                               content: facturabase,
-                              filename: 'factura-'+consultarResRaw.resp.fecha+'.pdf',
+                              filename: 'factura-'+factura.fecha+'.pdf',
                               type: 'application/pdf',
                               disposition: 'attachment',
                               content_id: 'factura-'+consultarResRaw.resp.fecha
                             },
                             {
                               content: xmlResponse,
-                              filename: 'xml-respuesta.xml',
+                              filename: 'factura-'+factura.fecha+'-respuesta.xml',
                               type: 'text/xml',
                               disposition: 'attachment',
                               content_id: 'xmlrespuesta-'+consultarResRaw.resp.fecha
@@ -378,21 +378,21 @@ function consultaFacturaRealizada(factura,clienteId,facturabase){
             attachments: [
                 {
                   content: facturabase,
-                  filename: 'factura-'+consultarResRaw.resp.fecha+'.pdf',
+                  filename: 'factura-'+factura.fecha+'.pdf',
                   type: 'application/pdf',
                   disposition: 'attachment',
                   content_id: 'factura-'+consultarResRaw.resp.fecha
                 },
                 {
                   content: factura.xml,
-                  filename: 'factura-'+consultarResRaw.resp.fecha+'.xml',
+                  filename: 'factura-'+factura.fecha+'.xml',
                   type: 'text/xml',
                   disposition: 'attachment',
                   content_id: 'factura-'+consultarResRaw.resp.fecha
                 },
                 {
                   content: xmlResponse,
-                  filename: 'respuesta-'+consultarResRaw.resp.fecha+'.xml',
+                  filename: 'respuesta-'+factura.fecha+'.xml',
                   type: 'text/xml',
                   disposition: 'attachment',
                   content_id: 'respuesta-'+consultarResRaw.resp.fecha
