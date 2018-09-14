@@ -217,6 +217,15 @@ function facturar(factura,clienteId,tipo,facturabase) {
                     'refreshToken': tokenRes.resp.refresh_token,
                     'xml': generarTERes.resp.xml
                 };
+            } else if (consultarResRaw.resp['ind-estado'] === 'rechazado'){
+                consultaRes = {
+                    'estado': 'success',
+                    'fecha': consultarResRaw.resp.fecha,
+                    'cliente': cliente.cedula,
+                    'respuesta': consultarResRaw.resp['ind-estado'],
+                    'xmlfirmado': xmlFirmado,
+                    'xmlrespuesta': xmlResponse
+                };
             } else {
                 var dir = __base + 'server/facturas/'+cliente.cedula;
                 if (!fs.existsSync(dir)){
@@ -342,6 +351,15 @@ function consultaFacturaRealizada(factura,clienteId,facturabase){
             'estado': 'fail',
             'error': 'recibido',
             'refreshToken': tokenRes.resp.refresh_token
+        };
+    } else if (consultarResRaw.resp['ind-estado'] === 'rechazado'){
+        consultaRes = {
+            'estado': 'success',
+            'fecha': consultarResRaw.resp.fecha,
+            'cliente': cliente.cedula,
+            'respuesta': consultarResRaw.resp['ind-estado'],
+            'xmlfirmado': xmlFirmado,
+            'xmlrespuesta': xmlResponse
         };
     } else {
         var dir = __base + 'server/facturas/'+cliente.cedula;
