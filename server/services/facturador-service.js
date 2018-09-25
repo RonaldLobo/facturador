@@ -241,7 +241,10 @@ function facturar(factura,clienteId,tipo,facturabase) {
                 if (!fs.existsSync(dir)){
                     fs.mkdirSync(dir);
                 }
-                fs.writeFile(dir+"/"+consultarResRaw.resp.fecha+".xml", consultarResRaw.resp['respuesta-xml'], 'base64', function(err) {
+                fs.writeFile(dir+"/"+consultarResRaw.resp.fecha+"-respuesta.xml", consultarResRaw.resp['respuesta-xml'], 'base64', function(err) {
+                  console.log(err);
+                });
+                fs.writeFile(dir+"/"+consultarResRaw.resp.fecha+"-firmado.xml", firmarRes.resp.xmlFirmado, 'base64', function(err) {
                   console.log(err);
                 });
                 consultaRes = {

@@ -15,6 +15,7 @@ var configuration = require(__base + 'server/configuration');
 var mongoose = configuration.mongoose;
 var routes = require(__base + '/server/routes');
 var port = process.env.PORT || 8080;
+var jobs = require(__base + 'server/jobs/jobs');
 
 configuration.express(app);
 app.use('/', routes);
