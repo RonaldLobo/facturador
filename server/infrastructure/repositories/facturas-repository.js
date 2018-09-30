@@ -318,6 +318,262 @@ function generaFE(
     return res;
 }
 
+function generaNC(
+        clave,
+        consecutivo,
+        fecha_emision,
+        emisor_nombre,
+        emisor_tipo_indetif,
+        emisor_num_identif,
+        nombre_comercial,
+        emisor_provincia,
+        emisor_canton,
+        emisor_distrito,
+        emisor_barrio,
+        emisor_otras_senas,
+        emisor_cod_pais_tel,
+        emisor_tel,
+        emisor_cod_pais_fax,
+        emisor_fax,
+        emisor_email,
+        receptor_nombre,
+        receptor_tipo_identif,
+        receptor_num_identif,
+        receptor_provincia,
+        receptor_canton,
+        receptor_distrito,
+        receptor_barrio,
+        receptor_otras_senas,
+        receptor_cod_pais_tel,
+        receptor_tel,
+        receptor_cod_pais_fax,
+        receptor_fax,
+        receptor_email,
+        condicion_venta,
+        plazo_credito,
+        medio_pago,
+        cod_moneda,
+        tipo_cambio,
+        total_serv_gravados,
+        total_serv_exentos,
+        total_merc_gravada,
+        total_merc_exenta,
+        total_gravados,
+        total_exentos,
+        total_ventas,
+        total_descuentos,
+        total_ventas_neta,
+        total_impuestos,
+        total_comprobante,
+        otros,
+        detalles,
+        omitir_receptor,
+        infoRefeTipoDoc,
+        infoRefeNumero,
+        infoRefeFechaEmision,
+        infoRefeCodigo,
+        infoRefeRazon
+        ) {
+    console.log('generaFE');
+    const form = new FormData();
+    form.append('w', 'genXML');
+    form.append('r', 'gen_xml_nc');
+    form.append('clave', clave);
+    form.append('consecutivo', consecutivo);
+    form.append('fecha_emision', fecha_emision);
+    form.append('emisor_nombre', emisor_nombre);
+    form.append('emisor_tipo_indetif', emisor_tipo_indetif);
+    form.append('emisor_num_identif', emisor_num_identif);
+    form.append('nombre_comercial', nombre_comercial);
+    form.append('emisor_provincia', emisor_provincia);
+    form.append('emisor_canton', emisor_canton);
+    form.append('emisor_distrito', emisor_distrito);
+    form.append('emisor_barrio', emisor_barrio);
+    form.append('emisor_otras_senas', emisor_otras_senas);
+    form.append('emisor_cod_pais_tel', emisor_cod_pais_tel);
+    form.append('emisor_tel', emisor_tel);
+    form.append('emisor_cod_pais_fax', emisor_cod_pais_fax);
+    form.append('emisor_fax', emisor_fax);
+    form.append('emisor_email', emisor_email);
+    form.append('condicion_venta', condicion_venta);
+    form.append('plazo_credito', plazo_credito);
+    form.append('medio_pago', medio_pago);
+    form.append('cod_moneda', cod_moneda);
+    form.append('tipo_cambio', tipo_cambio);
+    form.append('total_serv_gravados', total_serv_gravados);
+    form.append('total_serv_exentos', total_serv_exentos);
+    form.append('total_merc_gravada', total_merc_gravada);
+    form.append('total_merc_exenta', total_merc_exenta);
+    form.append('total_gravados', total_gravados);
+    form.append('total_exentos', total_exentos);
+    form.append('total_ventas', total_ventas);
+    form.append('total_descuentos', total_descuentos);
+    form.append('total_ventas_neta', total_ventas_neta);
+    form.append('total_impuestos', total_impuestos);
+    form.append('total_comprobante', total_comprobante);
+    form.append('otros', otros);
+    form.append('infoRefeTipoDoc', infoRefeTipoDoc);
+    form.append('infoRefeNumero', infoRefeNumero);
+    form.append('infoRefeFechaEmision', infoRefeFechaEmision);
+    form.append('infoRefeCodigo', infoRefeCodigo);
+    form.append('infoRefeRazon', infoRefeRazon);
+    form.append('detalles', JSON.stringify(detalles));
+    console.log('omitir_receptor',omitir_receptor, typeof(omitir_receptor));
+    console.log('detalles',JSON.stringify(detalles));
+    if(omitir_receptor === "true"){
+        console.log('omitiendo receptor');
+        form.append('omitir_receptor', "true");
+    } else {
+        console.log('incluyendo receptor',receptor_nombre);
+        form.append('omitir_receptor', "false");
+        form.append('receptor_nombre', receptor_nombre);
+        form.append('receptor_tipo_identif', receptor_tipo_identif);
+        form.append('receptor_num_identif', receptor_num_identif);
+        form.append('receptor_provincia', receptor_provincia);
+        form.append('receptor_canton', receptor_canton);
+        form.append('receptor_distrito', receptor_distrito);
+        form.append('receptor_barrio', receptor_barrio);
+        form.append('receptor_otras_senas', receptor_otras_senas);
+        form.append('receptor_cod_pais_tel', receptor_cod_pais_tel);
+        form.append('receptor_tel', receptor_tel);
+        form.append('receptor_cod_pais_fax', receptor_cod_pais_fax);
+        form.append('receptor_fax', receptor_fax);
+        form.append('receptor_email', receptor_email);
+    }
+    console.log(JSON.stringify(form))
+    var rawRes = await(fetch(apiUrl, { method: 'POST', body: form }));
+    var res = await(rawRes.json());
+    return res;
+}
+
+function generaND(
+        clave,
+        consecutivo,
+        fecha_emision,
+        emisor_nombre,
+        emisor_tipo_indetif,
+        emisor_num_identif,
+        nombre_comercial,
+        emisor_provincia,
+        emisor_canton,
+        emisor_distrito,
+        emisor_barrio,
+        emisor_otras_senas,
+        emisor_cod_pais_tel,
+        emisor_tel,
+        emisor_cod_pais_fax,
+        emisor_fax,
+        emisor_email,
+        receptor_nombre,
+        receptor_tipo_identif,
+        receptor_num_identif,
+        receptor_provincia,
+        receptor_canton,
+        receptor_distrito,
+        receptor_barrio,
+        receptor_otras_senas,
+        receptor_cod_pais_tel,
+        receptor_tel,
+        receptor_cod_pais_fax,
+        receptor_fax,
+        receptor_email,
+        condicion_venta,
+        plazo_credito,
+        medio_pago,
+        cod_moneda,
+        tipo_cambio,
+        total_serv_gravados,
+        total_serv_exentos,
+        total_merc_gravada,
+        total_merc_exenta,
+        total_gravados,
+        total_exentos,
+        total_ventas,
+        total_descuentos,
+        total_ventas_neta,
+        total_impuestos,
+        total_comprobante,
+        otros,
+        detalles,
+        omitir_receptor,
+        infoRefeTipoDoc,
+        infoRefeNumero,
+        infoRefeFechaEmision,
+        infoRefeCodigo,
+        infoRefeRazon
+        ) {
+    console.log('generaFE');
+    const form = new FormData();
+    form.append('w', 'genXML');
+    form.append('r', 'gen_xml_nd');
+    form.append('clave', clave);
+    form.append('consecutivo', consecutivo);
+    form.append('fecha_emision', fecha_emision);
+    form.append('emisor_nombre', emisor_nombre);
+    form.append('emisor_tipo_indetif', emisor_tipo_indetif);
+    form.append('emisor_num_identif', emisor_num_identif);
+    form.append('nombre_comercial', nombre_comercial);
+    form.append('emisor_provincia', emisor_provincia);
+    form.append('emisor_canton', emisor_canton);
+    form.append('emisor_distrito', emisor_distrito);
+    form.append('emisor_barrio', emisor_barrio);
+    form.append('emisor_otras_senas', emisor_otras_senas);
+    form.append('emisor_cod_pais_tel', emisor_cod_pais_tel);
+    form.append('emisor_tel', emisor_tel);
+    form.append('emisor_cod_pais_fax', emisor_cod_pais_fax);
+    form.append('emisor_fax', emisor_fax);
+    form.append('emisor_email', emisor_email);
+    form.append('condicion_venta', condicion_venta);
+    form.append('plazo_credito', plazo_credito);
+    form.append('medio_pago', medio_pago);
+    form.append('cod_moneda', cod_moneda);
+    form.append('tipo_cambio', tipo_cambio);
+    form.append('total_serv_gravados', total_serv_gravados);
+    form.append('total_serv_exentos', total_serv_exentos);
+    form.append('total_merc_gravada', total_merc_gravada);
+    form.append('total_merc_exenta', total_merc_exenta);
+    form.append('total_gravados', total_gravados);
+    form.append('total_exentos', total_exentos);
+    form.append('total_ventas', total_ventas);
+    form.append('total_descuentos', total_descuentos);
+    form.append('total_ventas_neta', total_ventas_neta);
+    form.append('total_impuestos', total_impuestos);
+    form.append('total_comprobante', total_comprobante);
+    form.append('otros', otros);
+    form.append('infoRefeTipoDoc', infoRefeTipoDoc);
+    form.append('infoRefeNumero', infoRefeNumero);
+    form.append('infoRefeFechaEmision', infoRefeFechaEmision);
+    form.append('infoRefeCodigo', infoRefeCodigo);
+    form.append('infoRefeRazon', infoRefeRazon);
+    form.append('detalles', JSON.stringify(detalles));
+    console.log('omitir_receptor',omitir_receptor, typeof(omitir_receptor));
+    console.log('detalles',JSON.stringify(detalles));
+    if(omitir_receptor === "true"){
+        console.log('omitiendo receptor');
+        form.append('omitir_receptor', "true");
+    } else {
+        console.log('incluyendo receptor',receptor_nombre);
+        form.append('omitir_receptor', "false");
+        form.append('receptor_nombre', receptor_nombre);
+        form.append('receptor_tipo_identif', receptor_tipo_identif);
+        form.append('receptor_num_identif', receptor_num_identif);
+        form.append('receptor_provincia', receptor_provincia);
+        form.append('receptor_canton', receptor_canton);
+        form.append('receptor_distrito', receptor_distrito);
+        form.append('receptor_barrio', receptor_barrio);
+        form.append('receptor_otras_senas', receptor_otras_senas);
+        form.append('receptor_cod_pais_tel', receptor_cod_pais_tel);
+        form.append('receptor_tel', receptor_tel);
+        form.append('receptor_cod_pais_fax', receptor_cod_pais_fax);
+        form.append('receptor_fax', receptor_fax);
+        form.append('receptor_email', receptor_email);
+    }
+    console.log(JSON.stringify(form))
+    var rawRes = await(fetch(apiUrl, { method: 'POST', body: form }));
+    var res = await(rawRes.json());
+    return res;
+}
+
 function firmar(p12Url,inXml,pin,tipodoc) {
     const form = new FormData();
     form.append('w', 'signXML');
@@ -397,6 +653,8 @@ module.exports = {
     generaMensaje: async(generaMensaje),
     generaTE: async(generaTE),
     generaFE: async(generaFE),
+    generaNC: async(generaNC),
+    generaND: async(generaND),
     firmar: async(firmar),
     token: async(token),
     envioMH: async(envioMH),

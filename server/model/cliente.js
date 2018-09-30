@@ -13,6 +13,8 @@ var schema = new mongoose.Schema({
     tipoCedula: { type: String, require: true},
     consecutivo: { type: Number, require: true},
     consecutivoRespuesta: { type: Number, default: 1},
+    consecutivoNc: { type: Number, default: 1},
+    consecutivoNd: { type: Number, default: 1},
     pinCert: { type: String, require: true},
     env: { type: String }
 },{ 

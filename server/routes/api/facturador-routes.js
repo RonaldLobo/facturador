@@ -27,6 +27,50 @@ function facturar(request, response) {
     }
 }
 
+function notadebito(request, response) {
+    console.log('POST notadebito');
+    console.log('Debug POST notadebito',request.query.con);
+    var result;
+    try {
+        if(request.body.conrealizada){
+            result = await (service.facturadorService.consultaFacturaRealizada(request.body.factura,request.body.cliente.id,request.body.facturabase.base));
+        } else {
+            // var tipoFA = (request.body.factura.omitirReceptor == "false") ? 'FE': 'TE';
+            if(request.body.con == true){
+                result = await (service.facturadorService.generaProximoCons(request.body.factura,request.body.cliente.id,'ND'));
+            } else {
+                result = await (service.facturadorService.generarND(request.body.factura,request.body.cliente.id,'ND'));
+            }
+        }
+        return handlers.successResponseHandler(response, result);
+    } catch (error) {
+        console.log('error',error);
+        return handlers.errorResponseHandler(response, error);
+    }
+}
+
+function notacredito(request, response) {
+    console.log('POST notacredito');
+    console.log('Debug POST notacredito',request.query.con);
+    var result;
+    try {
+        if(request.body.conrealizada){
+            result = await (service.facturadorService.consultaFacturaRealizada(request.body.factura,request.body.cliente.id,request.body.facturabase.base));
+        } else {
+            // var tipoFA = (request.body.factura.omitirReceptor == "false") ? 'FE': 'TE';
+            if(request.body.con == true){
+                result = await (service.facturadorService.generaProximoCons(request.body.factura,request.body.cliente.id,'NC'));
+            } else {
+                result = await (service.facturadorService.generarNC(request.body.factura,request.body.cliente.id,'NC'));
+            }
+        }
+        return handlers.successResponseHandler(response, result);
+    } catch (error) {
+        console.log('error',error);
+        return handlers.errorResponseHandler(response, error);
+    }
+}
+
 function aprobar(request, response) {
     console.log('POST aprobar');
     console.log('Debug POST aprobar');
@@ -46,5 +90,7 @@ function aprobar(request, response) {
 
 routes.post('/', async(facturar));
 routes.post('/aprobar/', async(aprobar));
+routes.post('/notacredito/', async(notacredito));
+routes.post('/notadebito/', async(notadebito));
 
 module.exports = routes;
