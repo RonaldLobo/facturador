@@ -1174,9 +1174,8 @@ function generarND(factura,clienteId,tipo) {
 }
 
 function consultar(idCliente,clave){
-    var cliente = await(ClientesRS.getCliente(clienteId));
+    var cliente = await(ClientesRS.getCliente(idCliente));
     var env = cliente.env || 'api-stag';
-    var xmlResponse = '';
     var consultarResRaw;
     if(cliente){
         try{
