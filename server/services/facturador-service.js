@@ -1173,6 +1173,25 @@ function generarND(factura,clienteId,tipo) {
     return consultaRes;
 }
 
+function consultar(idCliente,clave){
+    var cliente = await(ClientesRS.getCliente(clienteId));
+    var env = cliente.env || 'api-stag';
+    var xmlResponse = '';
+    var consultarResRaw;
+    if(cliente){
+        try{
+            var tokenRes = await (FacturasRP.token(env,cliente.usuarioHacienda, cliente.claveHacienda));
+            consultarResRaw = await (FacturasRP.consulta(env,tokenRes.resp.access_token,clave));
+        } catch(e){
+            consultaRes = {
+                'estado': 'error en hacienda',
+                'error': e.toString()
+            }
+        }
+    }
+    return consultarResRaw;
+}
+
 
 
 module.exports.consultaFacturaRealizada = async(consultaFacturaRealizada);
@@ -1182,6 +1201,7 @@ module.exports.generarND = async(generarND);
 module.exports.generaProximoCons = async(generaProximoCons);
 module.exports.aprobar = async(aprobar);
 module.exports.revisar = async(revisar);
+module.exports.consultar = async(consultar);
 
 
 

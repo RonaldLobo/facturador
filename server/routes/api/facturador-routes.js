@@ -88,9 +88,23 @@ function aprobar(request, response) {
     }
 }
 
+function consultar(request, response) {
+    console.log('POST aprobar');
+    console.log('Debug POST aprobar');
+    var result;
+    try {
+        result = await (service.facturadorService.consultar(request.body.cliente.id,request.body.factura.clave));
+        return handlers.successResponseHandler(response, result);
+    } catch (error) {
+        console.log('error',error);
+        return handlers.errorResponseHandler(response, error);
+    }
+}
+
 routes.post('/', async(facturar));
 routes.post('/aprobar/', async(aprobar));
 routes.post('/notacredito/', async(notacredito));
 routes.post('/notadebito/', async(notadebito));
+routes.post('/consultar/', async(consultar));
 
 module.exports = routes;
