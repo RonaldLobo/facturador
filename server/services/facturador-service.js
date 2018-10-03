@@ -273,6 +273,7 @@ function facturar(factura,clienteId,tipo,facturabase) {
                         text: 'Factura Electrónica por KyRapps.com',
                         html: `<div>
                             Factura Electronica N° `+generaClaveRes.resp.consecutivo+`<br>
+                            Clave: `+generaClaveRes.resp.clave+`<br>
                             <br>
                             Emitida por: ` + factura.emisor.nombre + `<br>
                             Nombre Comercial: ` + factura.nombreComercial + `<br>
@@ -407,6 +408,7 @@ function consultaFacturaRealizada(factura,clienteId,facturabase){
             text: 'Factura Electrónica por KyRapps.com',
             html: `<div>
                 Factura Electronica N° `+factura.consecutivo+`<br>
+                Clave: `+factura.clave+`<br>
                 <br>
                 Emitida por: ` + factura.emisor.nombre + `<br>
                 Nombre Comercial: ` + factura.nombreComercial + `<br>
