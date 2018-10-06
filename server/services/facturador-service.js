@@ -185,6 +185,7 @@ function facturar(factura,clienteId,tipo,facturabase) {
             var times = 0;
             var consultarResRaw;
             var seconds = 2;
+            var esperar = factura.esperar || true;
             async function consultarRes(){
                 console.log('consulta inicial');
                 consultarResRaw = await (FacturasRP.consulta(env,tokenRes.resp.access_token,generaClaveRes.resp.clave));
@@ -192,16 +193,16 @@ function facturar(factura,clienteId,tipo,facturabase) {
                 console.log(consultarResRaw);
                 console.log('---------------');
                 if (consultarResRaw.resp != null){
-                    // if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido' && times < 10){
-                    //     times++;
-                    //     console.log('va de vuelta')
-                    //     var waitTill = new Date(new Date().getTime() + seconds * 1000);
-                    //     while(waitTill > new Date()){}
-                    //     console.log('es el tiempo');
-                    //     await(consultarRes());
-                    // } else {
+                    if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido' && times < 10 && esperar){
+                        times++;
+                        console.log('va de vuelta')
+                        var waitTill = new Date(new Date().getTime() + seconds * 1000);
+                        while(waitTill > new Date()){}
+                        console.log('es el tiempo');
+                        await(consultarRes());
+                    } else {
                         xmlResponse = consultarResRaw.resp['respuesta-xml'];
-                    // }
+                    }
                 }
             }
             await(consultarRes());
@@ -418,21 +419,21 @@ function consultaFacturaRealizada(factura,clienteId,facturabase){
             attachments: [
                 {
                   content: facturabase,
-                  filename: 'factura-'+factura.fecha+'.pdf',
+                  filename: 'factura-'+consultarResRaw.resp.fecha+'.pdf',
                   type: 'application/pdf',
                   disposition: 'attachment',
                   content_id: 'factura-'+consultarResRaw.resp.fecha
                 },
                 {
                   content: factura.xml,
-                  filename: 'factura-'+factura.fecha+'.xml',
+                  filename: 'factura-'+consultarResRaw.resp.fecha+'.xml',
                   type: 'text/xml',
                   disposition: 'attachment',
                   content_id: 'factura-'+consultarResRaw.resp.fecha
                 },
                 {
                   content: xmlResponse,
-                  filename: 'respuesta-'+factura.fecha+'.xml',
+                  filename: 'respuesta-'+consultarResRaw.resp.fecha+'.xml',
                   type: 'text/xml',
                   disposition: 'attachment',
                   content_id: 'respuesta-'+consultarResRaw.resp.fecha
