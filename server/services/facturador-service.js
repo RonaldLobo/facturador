@@ -187,7 +187,7 @@ function facturar(factura,clienteId,tipo,facturabase) {
             var seconds = 2;
             var esperar = factura.esperar || true;
             async function consultarRes(){
-                console.log('consulta inicial');
+                console.log('consulta inicial',esperar,factura.esperar);
                 consultarResRaw = await (FacturasRP.consulta(env,tokenRes.resp.access_token,generaClaveRes.resp.clave));
                 console.log('consultarResRaw ---------------');
                 console.log(consultarResRaw);
