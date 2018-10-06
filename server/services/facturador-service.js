@@ -192,16 +192,16 @@ function facturar(factura,clienteId,tipo,facturabase) {
                 console.log(consultarResRaw);
                 console.log('---------------');
                 if (consultarResRaw.resp != null){
-                    if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido' && times < 10){
-                        times++;
-                        console.log('va de vuelta')
-                        var waitTill = new Date(new Date().getTime() + seconds * 1000);
-                        while(waitTill > new Date()){}
-                        console.log('es el tiempo');
-                        await(consultarRes());
-                    } else {
+                    // if(consultarResRaw.resp['ind-estado'] === 'procesando' || consultarResRaw.resp['ind-estado'] === 'recibido' && times < 10){
+                    //     times++;
+                    //     console.log('va de vuelta')
+                    //     var waitTill = new Date(new Date().getTime() + seconds * 1000);
+                    //     while(waitTill > new Date()){}
+                    //     console.log('es el tiempo');
+                    //     await(consultarRes());
+                    // } else {
                         xmlResponse = consultarResRaw.resp['respuesta-xml'];
-                    }
+                    // }
                 }
             }
             await(consultarRes());
