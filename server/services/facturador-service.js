@@ -688,7 +688,7 @@ function revisar(clienteId,data){
     }
 }
 
-function generarNC(factura,clienteId,tipo) {
+function generarNC(factura,clienteId,tipo,facturabase) {
     var cliente = await(ClientesRS.getCliente(clienteId));
     var env = cliente.env || 'api-stag';
     var xmlFirmado = '';
@@ -884,14 +884,22 @@ function generarNC(factura,clienteId,tipo) {
                         subject: 'Nota de Crédito N° '+ generaClaveRes.resp.consecutivo +' del Emisor: '+ factura.nombreComercial,
                         text: 'Factura Electrónica por KyRapps.com',
                         html: `<div>
-                            Nota de Crédito N° `+generaClaveRes.resp.consecutivo+`<br>
-                            <br>
+                            Nota de Crédito Electronica N° `+generaClaveRes.resp.consecutivo+`<br>
+                            Clave: `+generaClaveRes.resp.clave+`<br>
+                            <br>`+(factura.infoRefeCodigo == '01') ? `Factura Eliminada` : ``+`<br>
                             Emitida por: ` + factura.emisor.nombre + `<br>
                             Nombre Comercial: ` + factura.nombreComercial + `<br>
                             <br>
                             Generada por medio de <a href="http://www.kyrapps.com" target="_blank">http://www.kyrapps.com</a>
                         </div>`,
                         attachments: [
+                            {
+                              content: facturabase,
+                              filename: 'factura-'+consultarResRaw.resp.fecha+'.pdf',
+                              type: 'application/pdf',
+                              disposition: 'attachment',
+                              content_id: 'factura-'+consultarResRaw.resp.fecha
+                            },
                             {
                               content: xmlFirmado,
                               filename: 'factura-'+factura.fecha+'.xml',
@@ -932,7 +940,7 @@ function generarNC(factura,clienteId,tipo) {
     return consultaRes;
 }
 
-function generarND(factura,clienteId,tipo) {
+function generarND(factura,clienteId,tipo,facturabase) {
     var cliente = await(ClientesRS.getCliente(clienteId));
     var env = cliente.env || 'api-stag';
     var xmlFirmado = '';
@@ -1128,7 +1136,8 @@ function generarND(factura,clienteId,tipo) {
                         subject: 'Nota de Debito N° '+ generaClaveRes.resp.consecutivo +' del Emisor: '+ factura.nombreComercial,
                         text: 'Factura Electrónica por KyRapps.com',
                         html: `<div>
-                            Nota de Debito N° `+generaClaveRes.resp.consecutivo+`<br>
+                            Nota de Debito Electronica N° `+generaClaveRes.resp.consecutivo+`<br>
+                            Clave: `+generaClaveRes.resp.clave+`<br>
                             <br>
                             Emitida por: ` + factura.emisor.nombre + `<br>
                             Nombre Comercial: ` + factura.nombreComercial + `<br>
@@ -1136,6 +1145,13 @@ function generarND(factura,clienteId,tipo) {
                             Generada por medio de <a href="http://www.kyrapps.com" target="_blank">http://www.kyrapps.com</a>
                         </div>`,
                         attachments: [
+                            {
+                              content: facturabase,
+                              filename: 'factura-'+consultarResRaw.resp.fecha+'.pdf',
+                              type: 'application/pdf',
+                              disposition: 'attachment',
+                              content_id: 'factura-'+consultarResRaw.resp.fecha
+                            },
                             {
                               content: xmlFirmado,
                               filename: 'factura-'+factura.fecha+'.xml',

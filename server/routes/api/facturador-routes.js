@@ -39,7 +39,7 @@ function notadebito(request, response) {
             if(request.body.con == true){
                 result = await (service.facturadorService.generaProximoCons(request.body.factura,request.body.cliente.id,'ND'));
             } else {
-                result = await (service.facturadorService.generarND(request.body.factura,request.body.cliente.id,'ND'));
+                result = await (service.facturadorService.generarND(request.body.factura,request.body.cliente.id,'ND',request.body.facturabase.base));
             }
         }
         return handlers.successResponseHandler(response, result);
@@ -61,7 +61,7 @@ function notacredito(request, response) {
             if(request.body.con == true){
                 result = await (service.facturadorService.generaProximoCons(request.body.factura,request.body.cliente.id,'NC'));
             } else {
-                result = await (service.facturadorService.generarNC(request.body.factura,request.body.cliente.id,'NC'));
+                result = await (service.facturadorService.generarNC(request.body.factura,request.body.cliente.id,'NC',request.body.facturabase.base));
             }
         }
         return handlers.successResponseHandler(response, result);
