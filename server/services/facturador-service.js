@@ -399,7 +399,7 @@ function consultaFacturaRealizada(factura,clienteId,facturabase){
             'xmlrespuesta': xmlResponse
         };
         var to = [factura.emisor.email];
-        if(factura.omitirReceptor == "false"){
+        if(factura.omitirReceptor == "false" && factura.receptor.email && factura.receptor.email != factura.emisor.email){
             to.push(factura.receptor.email)
         }
         const msg = {
